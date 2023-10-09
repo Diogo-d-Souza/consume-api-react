@@ -2,7 +2,6 @@ import { get } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { FaEdit, FaUserCircle, FaWindowClose } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
-
 import Loading from '../../components/Loading';
 import axios from '../../services/axios';
 import { Container } from '../../styles/GlobalStyles';
