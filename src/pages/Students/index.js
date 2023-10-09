@@ -11,7 +11,7 @@ import { toast } from 'react-toastify';
 import Loading from '../../components/Loading';
 import axios from '../../services/axios';
 import { Container } from '../../styles/GlobalStyles';
-import { ProfilePicture, StudentContainer } from './styled';
+import { NewStudent, ProfilePicture, StudentContainer } from './styled';
 
 export default function Students() {
   const [isLoading, setIsLoading] = useState(false);
@@ -60,6 +60,7 @@ export default function Students() {
     <Container>
       <Loading isLoading={isLoading} />
       <h1>Students</h1>
+      <NewStudent to="/student/">New Student</NewStudent>
       <StudentContainer>
         {students.map((student, index) => (
           <div key={String(student.id)}>
