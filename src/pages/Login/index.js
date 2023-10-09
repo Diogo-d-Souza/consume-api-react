@@ -1,14 +1,16 @@
 import { get } from 'lodash';
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { isEmail } from 'validator';
+import Loading from '../../components/Loading';
 import * as actions from '../../store/modules/auth/actions';
 import { Container } from '../../styles/GlobalStyles';
 import { Form } from './styled';
 
 export default function Login(props) {
   const dispatch = useDispatch();
+  const isLoading = useSelector((state) => state.auth.isLoading);
   const prevPath = get(props, 'location.state.prevPath', '/');
 
   const [email, setEmail] = useState('');
@@ -35,7 +37,9 @@ export default function Login(props) {
 
   return (
     <Container>
+      <Loading isLoading={isLoading} />
       <h1>Login</h1>
+
       <Form>
         <input
           type="text"
