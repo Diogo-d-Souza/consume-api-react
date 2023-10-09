@@ -1,7 +1,9 @@
 import { get } from 'lodash';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
+import { FaEdit, FaUserCircle } from 'react-icons/fa';
 import { useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { isEmail, isFloat, isInt } from 'validator';
 import Loading from '../../components/Loading';
@@ -9,17 +11,18 @@ import axios from '../../services/axios';
 import history from '../../services/history';
 import * as actions from '../../store/modules/auth/actions';
 import { Container } from '../../styles/GlobalStyles';
-import { Form } from './styled';
+import { Form, ProfilePicture, Title } from './styled';
 
 export default function Student({ match }) {
   const dispatch = useDispatch();
-  const id = get(match, 'params.id', 0);
+  const id = get(match, 'params.id', '');
   const [name, setName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [age, setAge] = useState('');
   const [weight, setWeight] = useState('');
   const [height, setHeight] = useState('');
+  const [photo, setPhoto] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -28,6 +31,9 @@ export default function Student({ match }) {
       try {
         setIsLoading(true);
         const { data } = await axios.get(`/students/${id}`);
+        const Photo = get(data, 'Photos[0].url', '');
+
+        setPhoto(Photo);
 
         setName(data.name);
         setLastName(data.last_name);
@@ -49,7 +55,6 @@ export default function Student({ match }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(e);
     let formErrors = false;
 
     if (name.length < 3 || name.length > 255) {
@@ -127,7 +132,17 @@ export default function Student({ match }) {
   return (
     <Container>
       <Loading isLoading={isLoading} />
-      <h1> {id ? 'Edit student' : 'New student'} </h1>
+      <Title> {id ? 'Edit student' : 'New student'} </Title>
+
+      {id && (
+        <ProfilePicture>
+          {photo ? <img src={photo} alt={name} /> : <FaUserCircle size={180} />}
+          <Link to={`/photos/${id} `}>
+            <FaEdit size={24} />
+          </Link>
+        </ProfilePicture>
+      )}
+
       <Form onSubmit={handleSubmit}>
         <input
           type="text"
